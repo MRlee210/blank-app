@@ -31,7 +31,8 @@ with col3:
 if 'period' in locals():
     try:
         # yfinance를 통해 데이터 다운로드
-        data = yf.download(ticker, period=period, interval=interval)
+        data = yf.download(ticker, period=period, interval=interval, auto_adjust=True)
+
 
         if not data.empty:
             # 보조 지표 계산
@@ -112,6 +113,7 @@ if 'period' in locals():
             fig.update_yaxes(title_text="MACD", row=3, col=1)
             fig.update_yaxes(title_text="RSI", row=4, col=1)
             fig.update_yaxes(title_text="Williams %R", row=5, col=1)
+
 
 
             # Streamlit에 차트 표시
