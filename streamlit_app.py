@@ -15,8 +15,7 @@ if 'period' not in st.session_state:
 # Ticker 입력 받기
 ticker = st.text_input('Ticker를 입력하세요 (예: AAPL, GOOG)', 'AAPL')
 
-# --- ✨ 디버깅을 위한 코드 추가 ---
-# 현재 설정된 기간과 간격을 화면에 직접 표시하여 확인합니다.
+# 현재 설정된 기간과 간격을 화면에 직접 표시
 st.write(f"**현재 설정된 값:** 기간 = `{st.session_state.period}`, 간격 = `{st.session_state.interval}`")
 
 # 기간 선택 버튼
@@ -27,30 +26,30 @@ with col1:
     if st.button('일봉 (3개월)'):
         st.session_state.period = "3mo"
         st.session_state.interval = "1d"
-        st.rerun() # ✨ 상태 변경 후 앱을 강제로 다시 실행
+        st.rerun()
 
 with col2:
     if st.button('주봉 (9개월)'):
         st.session_state.period = "9mo"
         st.session_state.interval = "1wk"
-        st.rerun() # ✨ 상태 변경 후 앱을 강제로 다시 실행
+        st.rerun()
 
 with col3:
     if st.button('월봉 (10년)'):
         st.session_state.period = "10y"
         st.session_state.interval = "1mo"
-        st.rerun() # ✨ 상태 변경 후 앱을 강제로 다시 실행
+        st.rerun()
 
 # 데이터 불러오기 및 차트 생성
 try:
     # yfinance를 통해 데이터 다운로드
+    # ✨✨✨ 핵심 수정 사항: auto_adjust를 False로 변경 ✨✨✨
     data = yf.download(ticker,
                        period=st.session_state.period,
                        interval=st.session_state.interval,
-                       auto_adjust=True)
+                       auto_adjust=False) # Candlestick 차트를 위해 False로 설정
 
     if not data.empty:
-        # (이하 보조 지표 계산 및 차트 생성 코드는 이전과 동일)
         # 보조 지표 계산
         volume = data['Volume']
         exp1 = data['Close'].ewm(span=12, adjust=False).mean()
